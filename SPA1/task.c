@@ -15,10 +15,25 @@ typedef struct Task
     int sub_num;
     int runtime;
     int period;
-    float Utilization; // (runtime / period )
+    float Utilization; 
 } task;
 
-task UQ[5]; //Task 구조체의 배열
+
+task Task1 = {1,1,5,10,0.5f};
+task Task2 = {2,1,5,10,0.5f};
+task Task3 = {3,1,3,15,0.2f};
+task Task4 = {4,1,4,20,0.2f};
+task Task5 = {5,1,5,25,0.2f};
+
+typedef struct UQ
+{
+    task* list[5];
+    int rear,tail;
+}UQ;
+
+UQ* task_arr;
+
+
 
 /*
 Task_info
@@ -26,16 +41,23 @@ Task i의 정보 현재 상황을 담고있는 구조체
 
 num_of_subtasks: 현재 Split task의 Subtask의 개수 즉, Tail Subtask의 번호와 동일
 
-num_of_complete_tasks: 현재까지 완료된 task의 번호를 의미 
+next_run_tasks: 다음 수행해야할 (sub)task의 번호
 */
 
 typedef struct Task_info
 {
     int num_of_subtasks;
-    int num_of_complete_tasks ;
+    int next_run_tasks; 
 }task_info;
 
-task_info Task_manager[5]; // Task_info 구조체를 관리하는 배열
+task_info Task_manager[5]; 
+Task_manager = {
+    {1,1},
+    {1,1},
+    {1,1},
+    {1,1},
+    {1,1}
+};
 
 /*
 Processor
@@ -52,13 +74,36 @@ typedef struct Processor
 {
     int Pnum;
     int Utilization;
-    task WaitQ[10];
+    task WaitQ[5];
 } processor;
 
-processor Processor_manager[3]; // Processor 구조체의 배열
+processor Processor_manager[3]; 
+
+Processor_manager = {
+    {1,0},
+    {2,0},
+    {3,0}
+};
+
+
+void Push_task(task T);
+task Pop_task();
+
+void Push_processor(processor P);
+processor Pop_processor(); //Utilization 최소값
+
+void Assign_task(processor P, task T);
+
+/////////////////////////////////
+
+void Push_task(task T)
+{
+    
+}
 
 
 int main(){
+    task_arr-> list[0] = &Task1;
     return ;
 }
 
