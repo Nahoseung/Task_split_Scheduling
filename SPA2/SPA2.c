@@ -1,7 +1,7 @@
 #include "Task_Q.h"
 #include "Processor.h"
 #include <stdio.h>
-#include <math.h>
+
 
 float Utilization_bound ;
 task_stack task_set;
@@ -17,22 +17,21 @@ task_stack p3_waitQ;
 
 processor* processor_set[Num_of_P] = {&P1,&P2,&P3};
 
-void get_Utilization()
-{
-    float n = Num_of_T;
-    Utilization_bound =  n * (pow(2.0, 1.0 / n) - 1);
-    printf("For %d tasks Utilization Bound is :  %f \n",Num_of_T, Utilization_bound);
-    return;
-}
+// void get_Utilization()
+// {
+//     float n = Num_of_T;
+//     Utilization_bound =  n * (pow(2.0, 1.0 / n) - 1);
+//     printf("For %d tasks Utilization Bound is :  %f \n",Num_of_T, Utilization_bound);
+//     return;
+// }
 
 void init()
 {  
-    init_taskset(UQ);
+    Utilization_bound = init_taskset(UQ);
     P1.Wait_Q = &p1_waitQ;
     P2.Wait_Q = &p2_waitQ;
     P3.Wait_Q = &p3_waitQ;
     init_processor(processor_set);
-    get_Utilization();
 }
 
 void Split_task(task* T, float Processor_U)
@@ -59,6 +58,11 @@ void Split_task(task* T, float Processor_U)
     Push_task(Tail_T,UQ);
 
     return ;
+}
+
+int simple_test()
+{
+    
 }
 
 int main()

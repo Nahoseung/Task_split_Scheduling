@@ -2,6 +2,9 @@
 #define TASK_Q_H
 #define Num_of_T 6
 #define Num_of_P 3
+
+#include <stdbool.h>
+#include <math.h>
 // #define Utilization_bound 0.70f
 
 /*
@@ -19,6 +22,8 @@ typedef struct Task
     float runtime;
     float period;
     float Utilization; 
+    bool Heavy; //  1 : Heavy, 0 : Light 
+
 } task;
 
 
@@ -32,12 +37,13 @@ typedef struct task_stack
 }task_stack;
 
 
-
+float get_Utilization();
+float get_lighttask(float U);
 
 task* Pop_task(task_stack* task_arr);
 void Push_task(task* T,task_stack* task_arr);
 void init_stack(task_stack* task_arr);
-void init_taskset(task_stack* task_arr);
+float init_taskset(task_stack* task_arr);
 int is_full(task_stack* task_arr);
 int is_empty(task_stack* task_arr);
 

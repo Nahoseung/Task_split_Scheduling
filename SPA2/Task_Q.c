@@ -18,6 +18,24 @@ int pool_index = 0;
 task* temp_set[Num_of_T] = {&Task1,&Task2,&Task3,&Task4,&Task5,&Task6};
 
 
+float get_Utilization()
+{
+    float n = Num_of_T;
+    float U = n * (pow(2.0, 1.0 / n) - 1);
+    printf("For %d tasks Utilization Bound is :  %f \n",Num_of_T, U);
+    return U;
+    // printf("For %d tasks Utilization Bound is :  %f \n",Num_of_T, Utilization_bound);
+    // return;
+}
+
+float get_lighttask(float U)
+{
+    float Light_bound = U/(1+U);
+    printf("For %d tasks Light_Bound is :  %f \n",Num_of_T, Light_bound);
+    return Light_bound;
+}
+
+
 /// *************** For Task stack  *************** ///
 void init_stack(task_stack* task_arr)
 {
@@ -61,16 +79,24 @@ void Push_task(task* T, task_stack* task_arr)
     return;
 }
 
-void init_taskset(task_stack* task_arr)
+float init_taskset(task_stack* task_arr)
 {
+    float U = get_Utilization();
+    float Light_Bound = get_lighttask(U);
 
     init_stack(task_arr);
 
     for(int i=0;i<Num_of_T;i++)
     {
         Push_task(temp_set[i], task_arr);
+
         task_arr->list[i]->Utilization = ((task_arr->list[i]->runtime) / (task_arr->list[i]->period));
+
+        if(task_arr->list[i]->Utilization > Light_Bound) task_arr->list[i]->Heavy = true;
+        else task_arr->list[i]->Heavy = false;
+
     }
+    return U;
 }
 
 void Copy(task* T, task* copied_task)
@@ -84,7 +110,7 @@ void Copy(task* T, task* copied_task)
 
 void Print_task(task* T)
 {
-    printf("Task (%d,%d) : %f ( %f / %f ) \n",T->priority,T->sub_num,T->Utilization,T->runtime,T->period);
+    printf("Task (%d,%d) : %f ( %f / %f ) Heavy : %d \n",T->priority,T->sub_num,T->Utilization,T->runtime,T->period,T->Heavy);
     return;
 }
 

@@ -1,5 +1,6 @@
 #ifndef PROCESSOR_H_
 #define PROCESSOR_H_
+
 #include "Task_Q.h"
 
 /*
@@ -18,6 +19,7 @@ typedef struct Processor
     int Pnum;
     float Utilization;
     task_stack* Wait_Q;
+    bool Pre_assigned; //1: Pre_assigned , 0: Normal
 } processor;
 
 
