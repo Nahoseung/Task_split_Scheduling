@@ -4,7 +4,7 @@ task task_pool[Num_of_P-1];  // Split task 상한 : Num_of_P -1
 int pool_index = 0;
 
 
-/****** *******/
+/******************* Utilization ***********************/
 float get_Utilization()
 {
     float n = Num_of_T;
@@ -21,67 +21,68 @@ float get_lighttask(float U)
 }
 
 
-/// *************** Task stack  *************** ///
+/******************* Task_stack ***********************/
 
-void init_task_stack(task_stack* task_arr)
+void init_task_stack(task_stack* task_stack_ptr)
 {
-    task_arr->top = -1; //현재 stack에 들어가 있는 task를 가리킴
+    task_stack_ptr->top = -1; //현재 stack에 들어가 있는 task를 가리킴
 }
 
-bool is_full(task_stack* task_arr)
+bool is_full(task_stack* task_stack_ptr)
 {
-    if(task_arr->top >= (Num_of_T - 1) ) return true;
+    if(task_stack_ptr->top >= (Num_of_T - 1) ) return true;
     return false;
 }
 
-bool is_empty(task_stack* task_arr)
+bool is_empty(task_stack* task_stack_ptr)
 {
-    if(task_arr->top < 0) return true;
+    if(task_stack_ptr->top < 0) return true;
     return false;
 }
 
 
-task* Pop_task(task_stack* task_arr)
+task* Pop_task(task_stack* task_stack_ptr)
 {
-    if(is_empty(task_arr))
+    if(is_empty(task_stack_ptr))
     {
         printf("UNDER FLOW\n");
         return NULL;
     }
 
-    return task_arr->list[task_arr->top--];
+    return task_stack_ptr->list[task_stack_ptr->top--];
 }
 
-void Push_task(task* T, task_stack* task_arr)
+void Push_task(task* T, task_stack* task_stack_ptr)
 {
-    if(is_full(task_arr))
+    if(is_full(task_stack_ptr))
     {
         printf("OVER FLOW\n");
         return;
     }
 
-    task_arr->list[++task_arr->top] = T;
+    task_stack_ptr->list[++task_stack_ptr->top] = T;
     return;
 }
 
+/******************* Task Util ***********************/
 
-float init_taskset(task* temp_set[])
+float init_taskset(task* task_set[])
 {
     float U = get_Utilization();
     float Light_Bound = get_lighttask(U);
     
     for(int i=0;i<Num_of_T;i++)
     {
-        temp_set[i]->Utilization = temp_set[i]->runtime / temp_set[i]->period;
-
-        if(temp_set[i]->Utilization > Light_Bound) temp_set[i]->Heavy = true;
-        else temp_set[i]->Heavy = false;
+        task_set[i]->Utilization = task_set[i]->runtime / task_set[i]->period;
+        task_set[i]->synthetic_deadline = task_set[i]->period;
+        task_set[i]->Assigned_P = 0;
+        if(task_set[i]->Utilization > Light_Bound) task_set[i]->Heavy = true;
+        else task_set[i]->Heavy = false;
     }
     
     return U;
 }
 
-/****** Task util ******/
 
 void Copy(task* T, task* copied_task)
 {
@@ -92,10 +93,9 @@ void Copy(task* T, task* copied_task)
     return;
 }
 
-
 void Print_task(task* T)
 {
-    printf("Task (%d,%d) : %f ( %f / %f ) Heavy : %d \n",T->priority,T->sub_num,T->Utilization,T->runtime,T->period,T->Heavy);
+    printf("Task (%d,%d) : %f ( %f / %f -> %f ) \n",T->priority,T->sub_num,T->Utilization,T->runtime,T->period,T->synthetic_deadline);
     return;
 }
 
@@ -108,6 +108,14 @@ task* new_task()
     }
 
     return &task_pool[pool_index++];
+}
+
+void init_task_info(task* task_manager[])
+{
+    for(int i=0;i<Num_of_T+1;i++){
+        task_manager[i] = NULL;
+    }
+    return;
 }
 
 

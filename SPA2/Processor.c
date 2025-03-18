@@ -1,51 +1,49 @@
 #include "Processor.h"
 #include "Task_Q.h"
 
-/******** Processor stack *********/
+/******************* Processor_stack ***********************/
 
-void init_processor_stack(processor_stack* processor_arr)
+void init_processor_stack(processor_stack* processor_stack_ptr)
 {
-    processor_arr->top = -1;
+    processor_stack_ptr->top = -1;
 }
 
-bool P_is_full(processor_stack* processor_arr)
+bool P_is_full(processor_stack* processor_stack_ptr)
 {
-    if(processor_arr->top >= (Num_of_P -1)) return true;
+    if(processor_stack_ptr->top >= (Num_of_P -1)) return true;
     return false;
 }
 
-bool P_is_empty(processor_stack* processor_arr)
+bool P_is_empty(processor_stack* processor_stack_ptr)
 {
-    if(processor_arr->top<0) return true;
+    if(processor_stack_ptr->top < 0) return true;
     return false;
 }
 
-void Push_processor(processor* P, processor_stack* processor_arr)
+void Push_processor(processor* P, processor_stack* processor_stack_ptr)
 {
-    if(P_is_full(processor_arr))
-
+    if(P_is_full(processor_stack_ptr))
     {
         printf("PROCESSOR STACK OVERFLOW");
         return;
     }
 
-    processor_arr->list[++processor_arr->top] = P;
+    processor_stack_ptr->list[++processor_stack_ptr->top] = P;
     return;
 }
 
-processor* Pop_processor(processor_stack* processor_arr)
+processor* Pop_processor(processor_stack* processor_stack_ptr)
 {
-    if (P_is_empty(processor_arr))
+    if (P_is_empty(processor_stack_ptr))
     {
         printf("PROCESSOR STACK UNDER FLOW\n");
         return NULL;
     }
-
-    return processor_arr->list[processor_arr->top--];
+    return processor_stack_ptr->list[processor_stack_ptr->top--];
 }
 
 
-/********** Processor Util ***********/
+/******************* Processor Util ***********************/
 
 void init_processor(processor* P_set[], task_stack* Wait_Q_set[])
 {
@@ -59,26 +57,26 @@ void init_processor(processor* P_set[], task_stack* Wait_Q_set[])
     }
 }
 
-processor* get_min_processor(processor* processor_arr[],int len)
+processor* get_min_processor(processor* processor_set[],int len)
 {
-    int min_i=0;
-    for(int i=1; i< len+1; i++)
+    int min_i=len;
+    for(int i=len; i >=0 ; i--)
     {
-        if(processor_arr[i]->Utilization < processor_arr[min_i]->Utilization)
+        if(processor_set[i]->Utilization < processor_set[min_i]->Utilization)
         {
             min_i = i;
         }
     }
-    return processor_arr[min_i];
+    return processor_set[min_i];
 }
 
 void Assign_task(task* T, processor* P)
 {
     Push_task(T,P->Wait_Q);
+    T->Assigned_P = P->Pnum;
     float temp = P->Utilization;
     P->Utilization = P->Utilization + T->Utilization;
-    // floor(P->Utilization);
-    printf("P%d (%f) : Gonna assign Task(%d,%d) %f  After :  %f \n",(P->Pnum),temp,T->priority,T->sub_num,T->Utilization, P->Utilization );
+    printf("P%d (%f) : Gonna assign Task(%d,%d) %f  After :  %f \n",(P->Pnum),temp,T->priority,T->sub_num,T->Utilization, P->Utilization);
     return;
 }
 

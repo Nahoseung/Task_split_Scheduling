@@ -33,15 +33,15 @@ typedef struct Processor_stack
 }processor_stack;
 
 
-void init_processor_stack(processor_stack* processor_arr);
-bool P_is_full(processor_stack* processor_arr);
-bool P_is_empty(processor_stack* processor_arr);
+void init_processor_stack(processor_stack* processor_stack_ptr);
+bool P_is_full(processor_stack* processor_stack_ptr);
+bool P_is_empty(processor_stack* processor_stack_ptr);
 
-void Push_processor(processor* P, processor_stack* processor_arr);
-processor* Pop_processor(processor_stack* processor_arr);
+void Push_processor(processor* P, processor_stack* processor_stack_ptr);
+processor* Pop_processor(processor_stack* processor_stack_ptr);
 
 void init_processor(processor* P_set[], task_stack* Wait_Q_set[]);
-processor* get_min_processor(processor* processor_arr[],int len);
+processor* get_min_processor(processor* processor_stack_ptr[],int len);
 
 void Assign_task(task* T, processor* P);
 void Print_processor(processor* P);

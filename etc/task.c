@@ -31,7 +31,7 @@ typedef struct UQ
     int rear,tail;
 }UQ;
 
-UQ* task_arr;
+UQ* task_stack_ptr;
 
 
 
@@ -103,7 +103,7 @@ void Push_task(task T)
 
 
 int main(){
-    task_arr-> list[0] = &Task1;
+    task_stack_ptr-> list[0] = &Task1;
     return ;
 }
 
