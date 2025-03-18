@@ -19,7 +19,7 @@ task* temp_set[Num_of_T] = {&Task1,&Task2,&Task3,&Task4,&Task5,&Task6};
 
 
 /// *************** For Task stack  *************** ///
-void init_stack(task_stack* task_arr)
+void init_task_stack(task_stack* task_arr)
 {
     task_arr->top = -1; //현재 stack에 들어가 있는 task를 가리킴
 }
@@ -64,7 +64,7 @@ void Push_task(task* T, task_stack* task_arr)
 void init_taskset(task_stack* task_arr)
 {
 
-    init_stack(task_arr);
+    init_task_stack(task_arr);
 
     for(int i=0;i<Num_of_T;i++)
     {

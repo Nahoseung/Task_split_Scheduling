@@ -36,7 +36,7 @@ typedef struct task_stack
 
 task* Pop_task(task_stack* task_arr);
 void Push_task(task* T,task_stack* task_arr);
-void init_stack(task_stack* task_arr);
+void init_task_stack(task_stack* task_arr);
 void init_taskset(task_stack* task_arr);
 int is_full(task_stack* task_arr);
 int is_empty(task_stack* task_arr);

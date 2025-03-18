@@ -34,7 +34,7 @@ void init_processor(processor* processor_arr[])
     {
         processor_arr[i]->Pnum =i;
         processor_arr[i]->Utilization = 0.0f;
-        init_stack(processor_arr[i]->Wait_Q);
+        init_task_stack(processor_arr[i]->Wait_Q);
     }
 }
 

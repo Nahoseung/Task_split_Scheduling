@@ -101,14 +101,14 @@ int main()
 
     
     //// 
-    task* temp;
+    // task* temp;
 
-    temp = Pop_task(processor_set[0]->Wait_Q);
-    Print_task(temp);
-    temp = Pop_task(processor_set[1]->Wait_Q);
-    Print_task(temp);
-    temp = Pop_task(processor_set[2]->Wait_Q);
-    Print_task(temp);
+    // temp = Pop_task(processor_set[0]->Wait_Q);
+    // Print_task(temp);
+    // temp = Pop_task(processor_set[1]->Wait_Q);
+    // Print_task(temp);
+    // temp = Pop_task(processor_set[2]->Wait_Q);
+    // Print_task(temp);
 
     
     return 0;
