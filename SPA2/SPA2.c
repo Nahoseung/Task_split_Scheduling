@@ -10,29 +10,19 @@ task Task1 = {1,1,3,10};
 task Task2 = {2,1,15,20};
 task Task3 = {3,1,2,20};
 task Task4 = {4,1,2,20};
-// task Task5 = {5,1,4,40};
-// task Task6 = {6,1,25,40};
-// task Task7 = {7,1,4,40};
-// task Task8 = {8,1,4,40};
+
 
 task* temp_set[Num_of_T] = {&Task1,&Task2,&Task3,&Task4};
 
 task* task_manager[Num_of_T+1];
 
-// task Task1 = {1,1,3.0f,4.0f};
-// task Task2 = {2,1,4.25f,10.0f};
-// task Task3 = {3,1,4.25f,10.0f};
-
-// task* temp_set[Num_of_T] = {&Task1,&Task2,&Task3};
 
 processor P1; 
 processor P2;
-// processor P3;
 processor* P_set[Num_of_P] = {&P1,&P2};
 
 task_stack p1_waitQ;
 task_stack p2_waitQ;
-task_stack p3_waitQ;
 task_stack* Wait_Q_set[Num_of_P] = {&p1_waitQ,&p2_waitQ};
 
 processor_stack P_stack;
@@ -53,9 +43,8 @@ void init()
 
     // init PQ 
     init_processor_stack(PQ);
-    // Push_processor(&P3,PQ);
     Push_processor(&P2,PQ);
-    Push_processor(&P1,PQ); // init PQ : P1/P2/P3/
+    Push_processor(&P1,PQ); // init PQ : P1/P2/
 
     // init_PQ_pre
     init_processor_stack(PQ_pre); // init PQ pre :  NULL/
@@ -76,8 +65,6 @@ void Split_task(task* T, float Processor_U, int P_num)
     Tail_T->runtime = Origin_R - T->runtime;
     Tail_T->synthetic_deadline = T->synthetic_deadline - T->runtime;
     Tail_T->sub_num++;
-
-    // task_manager[Tail_T->priority].processor_num = P_num;
     task_manager[Tail_T->priority]= Tail_T;
 
     Push_task(Tail_T,UQ);
@@ -129,7 +116,6 @@ bool Tail_Schedulability()
 
 bool simple_test(task* T, int num_of_Lower_T ,int num_of_rest_P)
 {
-    /* RETURN PRE ASSIGN OR NOT */
     float sum=0.0f ,temp;
 
     for(int i= num_of_Lower_T+1; i < Num_of_T;i++)
@@ -137,7 +123,6 @@ bool simple_test(task* T, int num_of_Lower_T ,int num_of_rest_P)
         sum+=temp_set[i]->Utilization;
     }
 
-    // printf("Sum of lower priority than T%d is %f \n",num_of_Lower_T+1,sum);
 
     if(sum > num_of_rest_P*Utilization_bound) 
     {
@@ -224,7 +209,7 @@ void main()
 
     Print_processor(P_set[0]); // Processor 1 waitQ ->
     Print_processor(P_set[1]); // Processor 2 waitQ ->
-    // Print_processor(P_set[2]); // Processor 3 waitQ ->
+    
     if(Tail_Schedulability()) printf("ALL TAIL TASKS SCHEDULABLE\n");
 
     task* temp = Pop_task(P_set[0]->Wait_Q);
@@ -232,8 +217,6 @@ void main()
     temp = Pop_task(P_set[1]->Wait_Q);
     Print_task(temp);
 
-    // temp = Pop_task(P_set[2]->Wait_Q);
-    // Print_task(temp);
 
     
     
