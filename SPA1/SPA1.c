@@ -19,11 +19,6 @@ task* temp_set[Num_of_T] = {&Task1,&Task2,&Task3,&Task4};
 
 task* task_manager[Num_of_T+1];
 
-// task Task1 = {1,1,3.0f,4.0f};
-// task Task2 = {2,1,4.25f,10.0f};
-// task Task3 = {3,1,4.25f,10.0f};
-
-// task* temp_set[Num_of_T] = {&Task1,&Task2,&Task3};
 
 processor P1; 
 processor P2;
@@ -87,7 +82,7 @@ void Split_task(task* T, float Processor_U, int P_num)
 float Sum_of_H_priority(int P_num, int tail_priority)
 {
     task_stack* P = P_set[P_num -1]->Wait_Q;
-    int temp_i = P->top+1;
+    int temp_i = P->top;
     float sum =0.0f;
 
     while(temp_i >=0)
@@ -119,7 +114,7 @@ bool Tail_Schedulability()
 
             if( temp > Utilization_bound)
             {
-                printf("IM Tail task(%d,%d) IM in Processor %d  and Im Not Schedulable. \n",T->priority,T->sub_num,T->Assigned_P);
+                printf("IM Tail task(%d,%d) in Processor %d  and Im Not Schedulable. \n",T->priority,T->sub_num,T->Assigned_P);
                 flag = false;
             }
             
@@ -201,13 +196,13 @@ void main()
             Assign_task(T,min_P);
         }
     }
-
+    
     printf("-----------------------------------------------------------\n");
 
     Print_processor(P_set[0]); // Processor 1 waitQ ->
     Print_processor(P_set[1]); // Processor 2 waitQ ->
     // Print_processor(P_set[2]); // Processor 3 waitQ ->
-
+    if(Tail_Schedulability()) printf("ALL TAIL TASKS SCHEDULABLE\n");
 
     task* temp = Pop_task(P_set[0]->Wait_Q);
     Print_task(temp);
@@ -217,7 +212,7 @@ void main()
     // temp = Pop_task(P_set[2]->Wait_Q);
     // Print_task(temp);
 
-    if(Tail_Schedulability()) printf("ALL TAIL TASKS SCHEDULABLE\n");
+    
     
     return;
 }
